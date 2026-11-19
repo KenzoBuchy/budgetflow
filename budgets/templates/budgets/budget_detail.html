@@ -1,0 +1,23 @@
+{% extends "budgets/base.html" %}
+{% block content %}
+<h2>Budget for {{ budget.department.name }} in {{ budget.year }}</h2>
+<table>
+  <tr><th>Budget</th><td class="num">{{ budget.amount|floatformat:2 }}</td></tr>
+  <tr><th>Spent</th><td class="num">{{ budget.spent|floatformat:2 }}</td></tr>
+  <tr><th>Remaining</th><td class="num {% if budget.remaining < 0 %}over{% endif %}">{{ budget.remaining|floatformat:2 }}</td></tr>
+</table>
+<h3>Expenses</h3>
+<table>
+  <tr><th>Category</th><th>Label</th><th>Date</th><th>Amount</th></tr>
+  {% for e in budget.expenses.all %}
+  <tr>
+    <td>{{ e.category.name }}</td>
+    <td>{{ e.label }}</td>
+    <td>{{ e.spent_on }}</td>
+    <td class="num">{{ e.amount|floatformat:2 }}</td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="4">No expenses yet.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

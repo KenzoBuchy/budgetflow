@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}BudgetFlow{% endblock %}</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2rem auto; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { padding: .4rem .6rem; border-bottom: 1px solid #ddd; text-align: left; }
+    td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    .over { color: #b00020; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <h1><a href="{% url 'budgets:budget-list' %}">BudgetFlow</a></h1>
+  {% block content %}{% endblock %}
+</body>
+</html>
