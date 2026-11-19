@@ -1,5 +1,6 @@
 from decimal import Decimal
-
+from django.db.models import F, Sum, Value
+from django.db.models.functions import Coalesce
 from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.db import models
@@ -25,6 +26,16 @@ class Category(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+class BudgetQuerySet(models.QuerySet):
+    def with_totals(self):
+        return self.annotate(
+            spent=Coalesce(
+                Sum("expenses__amount"),
+                Value(Decimal("0.00")),
+                output_field=models.DecimalField(max_digits=14, decimal_places=2),
+            )
+        ).annotate(remaining=F("amount") - F("spent"))
+
 class Budget(models.Model):
     department = models.ForeignKey(
         Department, on_delete=models.PROTECT, related_name="budgets"
@@ -34,6 +45,7 @@ class Budget(models.Model):
         max_digits=14, decimal_places=2,
         validators=[MinValueValidator(Decimal("0.00"))],
     )
+    objects = BudgetQuerySet.as_manager()
 
     class Meta:
         ordering = ["-year", "department__code"]
