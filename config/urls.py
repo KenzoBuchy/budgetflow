@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken.views import obtain_auth_token
 
 from budgets.api import BudgetViewSet, CategoryViewSet, DepartmentViewSet, ExpenseViewSet
 
@@ -34,4 +35,5 @@ urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),   # browsable API login
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/docs/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
+    path("api/token/", obtain_auth_token, name="api-token"),
 ]
