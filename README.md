@@ -1,6 +1,6 @@
 # BudgetFlow
 
-![tests](https://github.com/YOUR_USERNAME/budgetflow/actions/workflows/tests.yml/badge.svg)
+![tests](https://github.com/KenzoBuchy/budgetflow/actions/workflows/tests.yml/badge.svg)
 
 Department budget tracking API built with Django, Django REST Framework and PostgreSQL.
 Built as a learning project to move from FastAPI/SQLAlchemy to Django.
