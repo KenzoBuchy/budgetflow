@@ -16,8 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from rest_framework.routers import DefaultRouter
+
+from budgets.api import BudgetViewSet, CategoryViewSet, DepartmentViewSet, ExpenseViewSet
+
+router = DefaultRouter()
+router.register("departments", DepartmentViewSet)
+router.register("categories", CategoryViewSet)
+router.register("budgets", BudgetViewSet, basename="budget")   # basename required: no queryset attribute
+router.register("expenses", ExpenseViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("budgets/", include("budgets.urls")),
+    path("api/", include(router.urls)),
+    path("api-auth/", include("rest_framework.urls")),   # browsable API login
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path("api/docs/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
 ]
